@@ -6,14 +6,14 @@ import { apiClient } from "services";
 type Ingredients = {
   ingredients: Ingredient[];
   loading: boolean;
-  selectedIds: Set<string>;
+  selectedIngredients: Set<string>;
   toggleId: (id: string) => void;
 };
 
 export const useFilterIngredients = (): Ingredients => {
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
   const [loading, setLoading] = useState(false);
-  const [selectedIds, { toggle }] = useSet(new Set<string>([]));
+  const [selectedIngredients, { toggle }] = useSet(new Set<string>([]));
 
   useEffect(() => {
     async function fetchIngredients() {
@@ -30,5 +30,5 @@ export const useFilterIngredients = (): Ingredients => {
     fetchIngredients();
   }, []);
 
-  return { ingredients, loading, selectedIds, toggleId: toggle };
+  return { ingredients, loading, selectedIngredients, toggleId: toggle };
 };

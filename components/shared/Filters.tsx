@@ -3,39 +3,63 @@
 import { Input } from "components/ui";
 import { CheckboxFiltersGroup, FilterCheckbox, RangeSlider, Title } from ".";
 import { useFilterIngredients } from "hooks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSet } from "react-use";
+import qs from "qs";
+import { useRouter, useSearchParams } from "next/navigation";
 
 type Props = {
   className?: string;
 };
 
-type PriceFIlterType = {
-  priceFrom: number;
-  priceTo: number;
+type PriceFilterType = {
+  priceFrom?: number;
+  priceTo?: number;
+};
+
+type QueryFilters = PriceFilterType & {
+  pizzaTypes: string[];
+  sizes: string[];
+  ingredients: string[];
 };
 
 export const Filters = ({ className }: Props) => {
-  const { ingredients, loading, toggleId, selectedIds } = useFilterIngredients();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const { ingredients, loading, toggleId, selectedIngredients } = useFilterIngredients();
   const minPrice = 0;
   const maxPrice = 1000;
 
-  const [price, setPrice] = useState<PriceFIlterType>({
-    priceFrom: minPrice,
-    priceTo: maxPrice,
+  const [price, setPrice] = useState<PriceFilterType>({
+    priceFrom: Number(searchParams.get("priceFrom")) || undefined,
+    priceTo: Number(searchParams.get("priceTo")) || undefined,
   });
 
-  const [sizes, { toggle: toggleSizes }] = useSet(new Set<string>([]));
-  const [pizzaTypes, { toggle: togglePizzaTypes }] = useSet(new Set<string>([]));
+  const [sizes, { toggle: toggleSizes }] = useSet(new Set<string>(searchParams.get("sizes")?.split(",") || []));
+  const [pizzaTypes, { toggle: togglePizzaTypes }] = useSet(new Set<string>(searchParams.get("pizzaTypes")?.split(",") || []));
 
   const items = ingredients.map((ingredient) => ({
     text: ingredient.name,
     value: ingredient.id.toString(),
   }));
 
-  const handlePriceChange = (name: keyof PriceFIlterType, value: number) => {
+  const handlePriceChange = (name: keyof PriceFilterType, value: number) => {
     setPrice({ ...price, [name]: value });
   };
+
+  useEffect(() => {
+    const filters = {
+      ...price,
+      pizzaTypes: Array.from(pizzaTypes),
+      sizes: Array.from(sizes),
+      ingredients: Array.from(selectedIngredients),
+    };
+
+    const query = qs.stringify(filters, {
+      arrayFormat: "comma",
+    });
+    router.push(`?${query}`, { scroll: false });
+  }, [price, pizzaTypes, sizes, selectedIngredients]);
 
   return (
     <div className={className}>
@@ -71,7 +95,7 @@ export const Filters = ({ className }: Props) => {
         <div className={"flex gap-3 mb-5"}>
           <Input
             type="number"
-            placeholder={price.priceFrom.toString()}
+            placeholder={minPrice.toString()}
             min={minPrice}
             max={maxPrice}
             value={price.priceFrom}
@@ -79,7 +103,7 @@ export const Filters = ({ className }: Props) => {
           />
           <Input
             type="number"
-            placeholder={price.priceTo.toString()}
+            placeholder={maxPrice.toString()}
             min={100}
             max={maxPrice}
             value={price.priceTo}
@@ -91,7 +115,7 @@ export const Filters = ({ className }: Props) => {
           min={minPrice}
           max={maxPrice}
           step={10}
-          value={[price.priceFrom, price.priceTo]}
+          value={[price.priceFrom || minPrice, price.priceTo || maxPrice]}
           onValueChange={([priceFrom, priceTo]) => setPrice({ priceFrom, priceTo })}
         />
       </div>
@@ -105,7 +129,7 @@ export const Filters = ({ className }: Props) => {
         items={items}
         onClickCheckbox={toggleId}
         loading={loading}
-        selectedValues={selectedIds}
+        selectedValues={selectedIngredients}
       />
     </div>
   );
