@@ -1,15 +1,16 @@
+import { PizzaSize, PizzaType } from "shared/constants/pizza";
 import { getCartDetails } from "shared/lib";
 import { apiClient } from "shared/services";
 import { create } from "zustand";
 
-export type ICartItem = {
+export type CartStateItem = {
   id: number;
   quantity: number;
   name: string;
   imageUrl: string;
   price: number;
-  pizzaSize?: number | null;
-  type?: number | null;
+  pizzaSize?: PizzaSize | null;
+  pizzaType?: PizzaType | null;
   ingredients: Array<{ name: string; price: number }>;
 };
 
@@ -17,7 +18,7 @@ export type CartState = {
   loading: boolean;
   error: boolean;
   totalAmount: number;
-  items: ICartItem[];
+  items: CartStateItem[];
   fetchCartItems: () => Promise<void>;
   updateItemQuantity: (id: number, quantity: number) => Promise<void>;
   addCartItem: (values: any) => Promise<void>;

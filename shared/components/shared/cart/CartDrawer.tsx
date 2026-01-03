@@ -1,20 +1,24 @@
 "use client";
 
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import Image from "next/image";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
-import { Button, Sheet, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "shared/components/ui";
-import { cn } from "shared/lib/utils";
-import { CartDrawerItem, Title } from "..";
+import { Button, Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "shared/components/ui";
 import { getCartItemDetails } from "shared/lib";
+import { CartDrawerItem } from "..";
+import { useCartStore } from "shared/store";
+import { useEffect } from "react";
+
+
 
 export const CartDrawer: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const [redirecting, setRedirecting] = useState(false);
+  
+  const totalAmount = useCartStore(state => state.totalAmount);
+  const items = useCartStore(state => state.items);
+  const fetchCartItems = useCartStore(state => state.fetchCartItems);
 
-  //   const { totalAmount, items, loading } = useCart(true);
-
-  const totalAmount = 200;
+  useEffect(() => {
+    fetchCartItems();
+  }, []);
 
   return (
     <Sheet>
@@ -27,26 +31,18 @@ export const CartDrawer: React.FC<React.PropsWithChildren> = ({ children }) => {
         </SheetHeader>
 
         <div className="-mx-6 mt-5 overflow-auto flex-1">
-          <div className={"mb-2"}>
-            <CartDrawerItem
-              id={1}
-              imageUrl={"https://media.dodostatic.net/image/r:233x233/11EE7D61304FAF5A98A6958F2BB2D260.webp"}
-              name={"Пицца 1"}
-              price={100}
-              quantity={1}
-              details={getCartItemDetails(1, 20, [{ name: "Сырный бортик" }, { name: "Сыры чеддер и пармезан" }])}
-            />
-          </div>
-          <div className={"mb-2"}>
-            <CartDrawerItem
-              id={1}
-              imageUrl={"https://media.dodostatic.net/image/r:233x233/11EE7D61304FAF5A98A6958F2BB2D260.webp"}
-              name={"Пицца 1"}
-              price={100}
-              quantity={1}
-              details={getCartItemDetails(1, 20, [{ name: "Сырный бортик" }, { name: "Сыры чеддер и пармезан" }])}
-            />
-          </div>
+          {items.map((item) => (
+            <div key={item.id} className="mb-2">
+              <CartDrawerItem
+                id={item.id}
+                imageUrl={item.imageUrl}
+                name={item.name}
+                price={item.price}
+                quantity={item.quantity}
+                details={item.pizzaType && item.pizzaSize ? getCartItemDetails(item.pizzaType, item.pizzaSize, item.ingredients) : ""}
+              />
+            </div>
+          ))}
         </div>
 
         <SheetFooter className="-mx-6 bg-white p-8">

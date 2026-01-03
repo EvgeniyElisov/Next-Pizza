@@ -196,19 +196,23 @@ const seedCartItems = async (cartMap: Map<number, number>, ingredientIds: number
 
   const firstProductVariant = await prisma.productVariant.findFirst({
     orderBy: { id: "asc" },
-    select: { id: true },
+    select: { id: true, pizzaType: true },
   });
 
   if (!firstProductVariant) return;
 
+  const isFirstPizza = firstProductVariant.pizzaType !== null;
+  
   await prisma.cartItem.create({
     data: {
       productVariantId: firstProductVariant.id,
       cartId: firstCartId,
       quantity: 2,
-      ingredients: {
-        connect: ingredientIds.slice(0, 3).map((id) => ({ id })),
-      },
+      ...(isFirstPizza && {
+        ingredients: {
+          connect: ingredientIds.slice(0, 3).map((id) => ({ id })),
+        },
+      }),
     },
   });
 
@@ -216,17 +220,45 @@ const seedCartItems = async (cartMap: Map<number, number>, ingredientIds: number
   const secondProductVariant = await prisma.productVariant.findFirst({
     skip: 1,
     orderBy: { id: "asc" },
-    select: { id: true },
+    select: { id: true, pizzaType: true },
   });
 
   if (secondCartId && secondProductVariant) {
+    const isSecondPizza = secondProductVariant.pizzaType !== null;
+    
     await prisma.cartItem.create({
       data: {
         productVariantId: secondProductVariant.id,
         cartId: secondCartId,
         quantity: 1,
+        ...(isSecondPizza && {
+          ingredients: {
+            connect: ingredientIds.slice(3, 5).map((id) => ({ id })),
+          },
+        }),
+      },
+    });
+  }
+
+  // Добавляем пиццу с ингредиентами для первого пользователя
+  const pizzaVariant = await prisma.productVariant.findFirst({
+    where: {
+      pizzaType: {
+        not: null,
+      },
+    },
+    orderBy: { id: "asc" },
+    select: { id: true },
+  });
+
+  if (firstCartId && pizzaVariant) {
+    await prisma.cartItem.create({
+      data: {
+        productVariantId: pizzaVariant.id,
+        cartId: firstCartId,
+        quantity: 1,
         ingredients: {
-          connect: ingredientIds.slice(3, 5).map((id) => ({ id })),
+          connect: ingredientIds.slice(0, 4).map((id) => ({ id })),
         },
       },
     });
