@@ -3,22 +3,27 @@
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { Button, Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "shared/components/ui";
-import { getCartItemDetails } from "shared/lib";
+import { getCartItemDetails, getProductInCorrectCase } from "shared/lib";
 import { CartDrawerItem } from "..";
 import { useCartStore } from "shared/store";
 import { useEffect } from "react";
-
-
 
 export const CartDrawer: React.FC<React.PropsWithChildren> = ({ children }) => {
   
   const totalAmount = useCartStore(state => state.totalAmount);
   const items = useCartStore(state => state.items);
   const fetchCartItems = useCartStore(state => state.fetchCartItems);
+  const updateItemQuantity = useCartStore(state => state.updateItemQuantity);
 
   useEffect(() => {
     fetchCartItems();
   }, []);
+
+  const onClickCountButton = (id: number, quantity: number, type: "plus" | "minus") => {
+    const newQuantity = type === "plus" ? quantity + 1 : quantity - 1;
+    updateItemQuantity(id, newQuantity);
+  }
+
 
   return (
     <Sheet>
@@ -26,7 +31,7 @@ export const CartDrawer: React.FC<React.PropsWithChildren> = ({ children }) => {
       <SheetContent className="flex flex-col justify-between pb-0 bg-[#F4F1EE]">
         <SheetHeader>
           <SheetTitle>
-            В корзине <span className="font-bold">3 товара</span>
+            В корзине <span className="font-bold">{items.length} {getProductInCorrectCase(items.length)}</span>
           </SheetTitle>
         </SheetHeader>
 
@@ -40,6 +45,7 @@ export const CartDrawer: React.FC<React.PropsWithChildren> = ({ children }) => {
                 price={item.price}
                 quantity={item.quantity}
                 details={item.pizzaType && item.pizzaSize ? getCartItemDetails(item.pizzaType, item.pizzaSize, item.ingredients) : ""}
+                onClickCountButton={(type) => onClickCountButton(item.id, item.quantity, type)}
               />
             </div>
           ))}

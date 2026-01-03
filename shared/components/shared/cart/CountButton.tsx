@@ -1,6 +1,5 @@
 import { cn } from "shared/lib/utils";
-import { CountIconButton } from ".";
-import { IconButtonProps } from "./CountIconButton";
+import { CountIconButton, IconButtonProps } from "./CountIconButton";
 
 export type CountButtonProps = {
   value?: number;
