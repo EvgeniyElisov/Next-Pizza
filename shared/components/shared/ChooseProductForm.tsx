@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import React from 'react';
 import { cn } from 'shared/lib/utils';
 import { Title } from '.';
 import { Button } from '../ui';
@@ -12,6 +11,7 @@ type Props = {
   price: number;
   className?: string;
   addProductToCart: () => void;
+  loading: boolean;
 }
 
 export const ChooseProductForm = ({
@@ -20,6 +20,7 @@ export const ChooseProductForm = ({
   price,
   addProductToCart,
   className,
+  loading,
 }: Props) => {
  
   const addProductToCartHandler = () => {
@@ -42,7 +43,7 @@ export const ChooseProductForm = ({
         <Title text={name} size="md" className="font-extrabold mb-1" />
 
         <Button
-          // loading={loading}
+          loading={loading}
           onClick={addProductToCartHandler}
           className="h-[55px] px-10 text-base rounded-[18px] w-full mt-10">
           Добавить в корзину за {price} ₽

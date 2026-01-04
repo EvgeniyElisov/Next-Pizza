@@ -1,11 +1,12 @@
 "use client";
 
-import { cn } from "shared/lib/utils";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import { Dialog, DialogContent } from "shared/components/ui";
+import { cn } from "shared/lib/utils";
+import { useCartStore } from "shared/store";
 import { ProductWithRelations } from "types/product";
 import { ChoosePizzaForm, ChooseProductForm } from "..";
-import { Dialog, DialogContent } from "shared/components/ui";
-import { useCartStore } from "shared/store";
 
 type Props = {
   product: ProductWithRelations;
@@ -16,41 +17,49 @@ export const ChooseProductModal = ({ product, className }: Props) => {
   const router = useRouter();
   const firstVariant = product.variants[0];
   const isPizzaForm = Boolean(firstVariant.pizzaType);
-  const addCartItem = useCartStore(state => state.addCartItem);
+  const addCartItem = useCartStore((state) => state.addCartItem);
+  const loading = useCartStore((state) => state.loading);
 
-  const addProductToCart = () => {
-    addCartItem({
-      productVariantId: firstVariant.id,
-    });
-  }
-  const addPizzaToCart = (productVariantId: number, ingredients: number[]) => {
-    addCartItem({
-      productVariantId,
-      ingredients,
-    });
+
+  const addProductToCartHandler = async (productVariantId: number, ingredients?: number[]) => {
+    try {
+      await addCartItem({
+        productVariantId,
+        ingredients,
+      });
+      toast.success("Товар добавлен в корзину");
+      back();
+    } catch (error) {
+      console.error(error);
+      toast.error("Не удалось добавить товар в корзину");
+    }
   }
 
-  const closeModalHandler = () => {
+  const back = () => {
     router.back();
   };
 
   return (
-    <Dialog open={Boolean(product)} onOpenChange={closeModalHandler}>
+    <Dialog open={Boolean(product)} onOpenChange={back}>
       <DialogContent className={cn("p-0 min-h-[500px] bg-white overflow-hidden w-[1060px]! max-w-[1060px]! sm:max-w-[1060px]!", className)}>
-        {isPizzaForm 
-        ? <ChoosePizzaForm 
-            imageUrl={product.imageUrl} 
-            name={product.name} 
-            ingredients={product.ingredients} 
-            variants={product.variants} 
-            addPizzaToCart={addPizzaToCart}
+        {isPizzaForm ? (
+          <ChoosePizzaForm
+            imageUrl={product.imageUrl}
+            name={product.name}
+            ingredients={product.ingredients}
+            variants={product.variants}
+            addPizzaToCart={(productVariantId, ingredients) => addProductToCartHandler(productVariantId, ingredients)}
+            loading={loading}
           />
-        : <ChooseProductForm 
+        ) : (
+          <ChooseProductForm 
             imageUrl={product.imageUrl} 
             name={product.name} 
-            price={firstVariant.price}
-            addProductToCart={addProductToCart}
-          />}
+            price={firstVariant.price} 
+            addProductToCart={() => addProductToCartHandler(firstVariant.id)} 
+            loading={loading} 
+          />
+        )}
       </DialogContent>
     </Dialog>
   );

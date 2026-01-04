@@ -15,6 +15,7 @@ type Props = {
   ingredients: Ingredient[];
   variants: ProductVariant[];
   addPizzaToCart: (productVariantId: number, ingredients: number[]) => void;
+  loading: boolean;
 };
 
 export const ChoosePizzaForm = ({ 
@@ -23,7 +24,9 @@ export const ChoosePizzaForm = ({
     imageUrl, 
     ingredients, 
     addPizzaToCart, 
-    className }: Props) => {
+    className,
+    loading,
+  }: Props) => {
 
 
   const { 
@@ -81,7 +84,7 @@ export const ChoosePizzaForm = ({
           </div>
         </div>
         <Button 
-        // loading={loading} 
+        loading={loading} 
         onClick={addPizzaToCartHandler} 
         className="h-[55px] px-10 text-base rounded-[18px] w-full mt-10">
           Добавить в корзину за {totalPrice} ₽
