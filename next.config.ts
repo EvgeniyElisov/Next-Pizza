@@ -3,7 +3,20 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   reactStrictMode: false,
   images: {
-    domains: ["media.dodostatic.net", "img.freepik.com", "cdn.dodostatic.net"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "media.dodostatic.net",
+      },
+      {
+        protocol: "https",
+        hostname: "img.freepik.com",
+      },
+      {
+        protocol: "https",
+        hostname: "cdn.dodostatic.net",
+      },
+    ],
   },
 };
 

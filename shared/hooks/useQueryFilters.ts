@@ -15,13 +15,19 @@ export const useQueryFilters = (filters: FiltersType) => {
       ingredients: Array.from(filters.selectedIngredientIds),
     };
 
-    const query = qs.stringify(params, {
-      arrayFormat: "comma",
-    });
+    const query = qs.stringify(params, { arrayFormat: "comma" });
+
+    if (!query) {
+      if (prevQuery) {
+        setPrevQuery("");
+        router.replace("/", { scroll: false }); // квери убираем полностью
+      }
+      return;
+    }
 
     if (prevQuery !== query) {
       setPrevQuery(query);
       router.push(`?${query}`, { scroll: false });
     }
-  }, [filters]);
+  }, [filters, prevQuery, router]);
 };

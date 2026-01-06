@@ -1,14 +1,15 @@
 "use client";
 
-import { cn } from "shared/lib/utils";
 import { RefObject, useEffect, useRef } from "react";
 import { useIntersection } from "react-use";
-import { ProductCard, Title } from ".";
+import { cn } from "shared/lib/utils";
 import { useCategoryStore } from "shared/store/category";
+import { ProductWithRelations } from "types/product";
+import { ProductCard, Title } from ".";
 
 type Props = {
   title: string;
-  products: any[];
+  products: ProductWithRelations[];
   className?: string;
   listClassName?: string;
   categoryId: number;
@@ -39,7 +40,6 @@ export const ProductsGroupList = ({ title, products, className, listClassName, c
             name={product.name} 
             imageUrl={product.imageUrl} 
             price={product.variants[0].price} 
-            variants={product.variants}
             ingredients={product.ingredients}
           />
         ))}

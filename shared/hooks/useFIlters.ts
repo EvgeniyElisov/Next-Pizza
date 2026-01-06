@@ -1,6 +1,5 @@
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
-import { useSet } from "react-use";
+import { useEffect, useMemo, useState } from "react";
 
 export type PriceFilterType = {
   priceFrom?: number;
@@ -23,13 +22,36 @@ type ReturnFiltersType = FiltersType & {
 
 export const useFilters = (): ReturnFiltersType => {
   const searchParams = useSearchParams();
-  const [selectedIngredientIds, { toggle: toggleSelectedIngredientIds }] = useSet(new Set<string>(searchParams.get("ingredients")?.split(",")));
-  const [price, setPrice] = useState<PriceFilterType>({
+  const searchParamsKey = useMemo(() => searchParams.toString(), [searchParams]);
+
+  const parseSetParam = (name: string) => {
+    const value = searchParams.get(name);
+    return new Set<string>(value?.split(",").filter(Boolean));
+  };
+
+  const parsePrice = () => ({
     priceFrom: Number(searchParams.get("priceFrom")) || undefined,
     priceTo: Number(searchParams.get("priceTo")) || undefined,
   });
-  const [sizes, { toggle: toggleSizes }] = useSet(new Set<string>(searchParams.get("sizes")?.split(",")));
-  const [pizzaTypes, { toggle: togglePizzaTypes }] = useSet(new Set<string>(searchParams.get("pizzaTypes")?.split(",")));
+
+  const [selectedIngredientIds, setSelectedIngredientIds] = useState<Set<string>>(parseSetParam("ingredients"));
+  const [price, setPrice] = useState<PriceFilterType>(parsePrice);
+  const [sizes, setSizes] = useState<Set<string>>(parseSetParam("sizes"));
+  const [pizzaTypes, setPizzaTypes] = useState<Set<string>>(parseSetParam("pizzaTypes"));
+
+  useEffect(() => {
+    setSelectedIngredientIds(parseSetParam("ingredients"));
+    setSizes(parseSetParam("sizes"));
+    setPizzaTypes(parseSetParam("pizzaTypes"));
+    setPrice(parsePrice());
+  }, [searchParamsKey]);
+
+  const toggleSetValue = (setState: React.Dispatch<React.SetStateAction<Set<string>>>) => (value: string) =>
+    setState((prev) => {
+      const next = new Set(prev);
+      next.has(value) ? next.delete(value) : next.add(value);
+      return next;
+    });
 
   const handlePriceChange = (name: keyof PriceFilterType, value: number) => {
     setPrice((prev) => ({ ...prev, [name]: value }));
@@ -41,8 +63,8 @@ export const useFilters = (): ReturnFiltersType => {
     price,
     selectedIngredientIds,
     setPrice: handlePriceChange,
-    setPizzaTypes: togglePizzaTypes,
-    setSizes: toggleSizes,
-    setSelectedIngredientIds: toggleSelectedIngredientIds,
+    setPizzaTypes: toggleSetValue(setPizzaTypes),
+    setSizes: toggleSetValue(setSizes),
+    setSelectedIngredientIds: toggleSetValue(setSelectedIngredientIds),
   };
 };
