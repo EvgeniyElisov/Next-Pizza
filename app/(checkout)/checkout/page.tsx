@@ -31,7 +31,7 @@ export default function CheckoutPage() {
             contentClassName="p-8"
           >
             <div className="flex flex-col gap-5">
-              <Input name="firstName" className="text-base" placeholder="Имя" />
+              <Input name="address" className="text-base" placeholder="Адрес доставки" />
               <Textarea 
                 name="comment" 
                 className="text-base" 
