@@ -30,7 +30,7 @@ export const IngredientItem = ({
       {active && <CircleCheck className="absolute top-2 right-2 text-primary" />}
       <Image width={110} height={110} src={imageUrl} alt={name} />
       <span className="text-xs mb-1">{name}</span>
-      <span className="font-bold">{price} ₽</span>
+      <span className="font-bold">{price} руб.</span>
     </div>
   );
 };

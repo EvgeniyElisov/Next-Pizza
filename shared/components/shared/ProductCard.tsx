@@ -30,7 +30,7 @@ export const ProductCard = ({ id, name, price, imageUrl, className, ingredients 
 
         <div className="flex justify-between items-center mt-4">
           <span className="text-[20px]">
-            от <b>{price} ₽</b>
+            от <b>{price} руб.</b>
           </span>
 
           <Button variant="secondary" className="text-base font-bold">

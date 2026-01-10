@@ -18,7 +18,7 @@ export const CheckoutDetails = ({ icon: Icon, text, value, className }: Props) =
         </div>
         <div className="flex-1 border-b border-dashed border-b-neutral-200 relative -top-1 mx-2" />
       </div>
-      <span className="font-bold text-lg">{value} ₽</span>
+      <span className="font-bold text-lg">{value} руб.</span>
     </div>
   );
 };

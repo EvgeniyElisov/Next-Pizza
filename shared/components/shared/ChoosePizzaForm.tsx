@@ -87,7 +87,7 @@ export const ChoosePizzaForm = ({
         loading={loading} 
         onClick={addPizzaToCartHandler} 
         className="h-[55px] px-10 text-base rounded-[18px] w-full mt-10">
-          Добавить в корзину за {totalPrice} ₽
+          Добавить в корзину за {totalPrice} руб.
         </Button>
       </div>
     </div>

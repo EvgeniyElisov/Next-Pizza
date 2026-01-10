@@ -21,7 +21,7 @@ export const CheckoutSidebar = ({ totalAmount, className, submitting }: Props) =
     <InfoBlock className={cn("p-6 sticky top-4", className)}>
       <div className="flex flex-col gap-1">
         <span className="text-xl">Итого:</span>
-        <span className="text-[34px] font-extrabold">{totalPrice} ₽</span>
+        <span className="text-[34px] font-extrabold">{totalPrice} руб.</span>
       </div>
 
       <CheckoutDetails

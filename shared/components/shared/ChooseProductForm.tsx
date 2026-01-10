@@ -46,7 +46,7 @@ export const ChooseProductForm = ({
           loading={loading}
           onClick={addProductToCartHandler}
           className="h-[55px] px-10 text-base rounded-[18px] w-full mt-10">
-          Добавить в корзину за {price} ₽
+          Добавить в корзину за {price} руб.
         </Button>
       </div>
     </div>
