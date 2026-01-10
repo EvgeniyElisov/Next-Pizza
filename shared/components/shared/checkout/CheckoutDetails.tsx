@@ -4,7 +4,7 @@ import { cn } from "shared/lib/utils";
 type Props = {
   icon: LucideIcon;
   text: string;
-  value: number;
+  value: React.ReactNode;
   className?: string;
 };
 
@@ -18,7 +18,7 @@ export const CheckoutDetails = ({ icon: Icon, text, value, className }: Props) =
         </div>
         <div className="flex-1 border-b border-dashed border-b-neutral-200 relative -top-1 mx-2" />
       </div>
-      <span className="font-bold text-lg">{value} руб.</span>
+      <span className="font-bold text-lg">{value}</span>
     </div>
   );
 };

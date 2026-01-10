@@ -3,13 +3,14 @@ import { FormField } from "..";
 
 type Props = {
   totalAmount: number;
+  className?: string;
 };
 
-export const CheckoutPersonalInfo = ({ totalAmount }: Props) => {
+export const CheckoutPersonalInfo = ({ totalAmount, className }: Props) => {
   return (
     <InfoBlock 
         title="2. Персональная информация" 
-        className={!totalAmount ? "opacity-50 pointer-events-none" : ""} 
+        className={className} 
         contentClassName="p-8"
     >
       <div className="grid grid-cols-2 gap-5">

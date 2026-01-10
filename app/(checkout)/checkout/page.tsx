@@ -14,8 +14,8 @@ import { OrderFormInputs, orderFormSchema } from "shared/components/shared/check
 import { useCart } from "shared/hooks";
 
 export default function CheckoutPage() {
-  const { items, totalAmount, onClickCountButtonHandler, onClickRemoveCartItemHandler } = useCart();
-  const submitting = false;
+  const { items, totalAmount, onClickCountButtonHandler, onClickRemoveCartItemHandler, loading, initialLoading } = useCart();
+
   const form = useForm<OrderFormInputs>({
     resolver: zodResolver(orderFormSchema),
     defaultValues: {
@@ -43,12 +43,13 @@ export default function CheckoutPage() {
                 items={items} 
                 onClickCountButtonHandler={onClickCountButtonHandler} 
                 onClickRemoveCartItemHandler={onClickRemoveCartItemHandler} 
+                initialLoading={initialLoading}
               />
-              <CheckoutPersonalInfo totalAmount={totalAmount} />
-              <CheckoutAddress totalAmount={totalAmount} />
+              <CheckoutPersonalInfo totalAmount={totalAmount} className={loading ? "opacity-40 pointer-events-none" : ""} />
+              <CheckoutAddress totalAmount={totalAmount} className={loading ? "opacity-40 pointer-events-none" : ""} />
             </div>
             <div className="w-[450px]">
-              <CheckoutSidebar totalAmount={totalAmount} submitting={submitting} />
+              <CheckoutSidebar totalAmount={totalAmount} loading={loading} />
             </div>
           </div>
         </form>

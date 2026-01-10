@@ -18,6 +18,7 @@ export type CartStateItem = {
 
 export type State = {
   loading: boolean;
+  initialLoading: boolean;
   error: boolean;
   totalAmount: number;
   items: CartStateItem[];
@@ -29,17 +30,18 @@ export type State = {
 
 export const useCartStore = create<State>((set, get) => ({
   loading: true,
+  initialLoading: true,
   error: false,
   totalAmount: 0,
   items: [],
   fetchCartItems: async () => {
     try {
-      set({ loading: true, error: false });
+      set({ loading: true, initialLoading: true, error: false });
       const data = await apiClient.cart.getCart();
-      set(getCartDetails(data));
+      set({ ...getCartDetails(data), initialLoading: false });
     } catch (error) {
       console.error(error);
-      set({ error: true });
+      set({ error: true, initialLoading: false });
     } finally {
       set({ loading: false });
     }
@@ -47,7 +49,6 @@ export const useCartStore = create<State>((set, get) => ({
   updateItemQuantity: async (id: number, quantity: number) => {
     try {
       set((state) => ({
-        loading: true,
         error: false,
         items: state.items.map((item) => (item.id === id ? { ...item, disabled: true } : item)),
       }));
@@ -58,7 +59,6 @@ export const useCartStore = create<State>((set, get) => ({
       set({ error: true });
     } finally {
       set((state) => ({
-        loading: false,
         items: state.items.map((item) => (item.id === id ? { ...item, disabled: false } : item)),
       }));
     }
@@ -66,7 +66,6 @@ export const useCartStore = create<State>((set, get) => ({
   removeCartItem: async (id: number) => {
     try {
       set((state) => ({
-        loading: true,
         error: false,
         items: state.items.map((item) => (item.id === id ? { ...item, disabled: true } : item)),
       }));
@@ -77,7 +76,6 @@ export const useCartStore = create<State>((set, get) => ({
       console.error(error);
     } finally {
       set((state) => ({
-        loading: false,
         items: state.items.map((item) => (item.id === id ? { ...item, disabled: false } : item)),
       }));
     }

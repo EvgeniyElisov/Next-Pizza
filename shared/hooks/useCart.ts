@@ -8,6 +8,7 @@ type ReturnProps = {
   items: CartStateItem[];
   totalAmount: number;
   loading: boolean;
+  initialLoading: boolean;
   addCartItem: (values: CreateCartItemValues) => void;
   onClickCountButtonHandler: (id: number, type: "plus" | "minus", quantity: number) => void;
   onClickRemoveCartItemHandler: (id: number) => void;
@@ -17,6 +18,7 @@ export const useCart = (): ReturnProps => {
   const items = useCartStore((state) => state.items);
   const totalAmount = useCartStore((state) => state.totalAmount);
   const loading = useCartStore((state) => state.loading);
+  const initialLoading = useCartStore((state) => state.initialLoading);
   const updateItemQuantity = useCartStore((state) => state.updateItemQuantity);
   const removeCartItem = useCartStore((state) => state.removeCartItem);
   const addCartItem = useCartStore((state) => state.addCartItem);
@@ -37,7 +39,8 @@ export const useCart = (): ReturnProps => {
   return { 
     items, 
     totalAmount, 
-    loading, 
+    loading,
+    initialLoading,
     addCartItem,
     onClickCountButtonHandler,
     onClickRemoveCartItemHandler

@@ -14,6 +14,7 @@ export const CountIconButton = ({ size = "sm", disabled, type, onClick }: IconBu
   return (
     <Button
       variant="outline"
+      type="button"
       disabled={disabled}
       onClick={onClick}
       className={cn(

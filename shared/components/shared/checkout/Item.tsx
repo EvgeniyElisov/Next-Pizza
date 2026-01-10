@@ -33,7 +33,7 @@ export const Item= ({
 
       <div className="flex items-center gap-5 ml-20">
         <CountButton onClick={onClickCountButton} value={quantity} />
-        <button onClick={onClickRemoveCartItem}>
+        <button type="button" onClick={onClickRemoveCartItem}>
           <X className="text-gray-400 cursor-pointer hover:text-gray-600" size={20} />
         </button>
       </div>
