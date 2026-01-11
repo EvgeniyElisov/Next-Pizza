@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { createOrder } from "app/serverActions";
 import { FormProvider, useForm } from "react-hook-form";
 import { 
   CheckoutAddress, 
@@ -29,7 +30,7 @@ export default function CheckoutPage() {
   });
 
   const onSubmit = (data: OrderFormInputs) => {
-    console.log(data);
+    createOrder(data);
   };
 
   return (

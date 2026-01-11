@@ -1,8 +1,6 @@
 import { CartDTO, CreateCartItemValues } from "./dto/cart";
 import { axiosInstance } from "./instance";
-import { Cart } from "@prisma/client";
 
-type AddCartItemResponseDTO = { success: boolean; cart: Cart };
 
 export const getCart = async (): Promise<CartDTO> => {
   const { data } = await axiosInstance.get<CartDTO>("/cart");

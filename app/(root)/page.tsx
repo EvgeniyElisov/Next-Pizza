@@ -1,4 +1,3 @@
-import { prisma } from "prisma/prisma";
 import { Suspense } from "react";
 import { Container, Filters, ProductsGroupList, Title, TopBar } from "shared/components/shared";
 import { findPizzas, GetSearchParams } from "shared/lib/findPizzas";

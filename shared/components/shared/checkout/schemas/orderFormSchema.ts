@@ -22,7 +22,7 @@ export const orderFormSchema = z.object({
     .min(1, { error: "Поле обязательно для заполнения" })
     .regex(
       /^\+375\s?\(?(29|33|44|25)\)?\s?(\d{3})[- ]?(\d{2})[- ]?(\d{2})$/,
-      { error: "Некорректный номер телефона. Формат: +375 (XX) XXX-XX-XX" }
+      { error: "Некорректный номер телефона. Формат: +375 XX XXXXXXX" }
     ),
   address: z
     .string()

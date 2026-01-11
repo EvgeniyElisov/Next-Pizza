@@ -20,7 +20,7 @@ export const ChooseProductModal = ({ product, className }: Props) => {
 
   return (
     <Dialog open={Boolean(product)} onOpenChange={handleBack}>
-      <DialogContent className={cn("p-0 min-h-[500px] bg-white overflow-hidden w-[1060px]! max-w-[1060px]! sm:max-w-[1060px]!", className)}>
+      <DialogContent className={cn("p-0 min-h-[500px] bg-white overflow-hidden w-[1060px] max-w-[1060px] sm:max-w-[1060px]", className)}>
         <ProductForm product={product} onSuccess={handleBack} />
       </DialogContent>
     </Dialog>
