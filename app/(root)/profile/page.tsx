@@ -7,7 +7,7 @@ export default async function ProfilePage() {
   const session = await getUserSession();
 
   if (!session) {
-    return redirect('/not-auth');
+    return redirect("/not-auth");
   }
 
   const user = await prisma.user.findFirst({
@@ -17,7 +17,7 @@ export default async function ProfilePage() {
   });
 
   if (!user) {
-    return redirect('/not-auth');
+    return redirect("/not-auth");
   }
 
   return <ProfileForm data={user} />;
