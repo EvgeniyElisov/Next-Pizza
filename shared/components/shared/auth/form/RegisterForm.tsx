@@ -46,12 +46,36 @@ export const RegisterForm = ({ onClose, onClickLogin }: Props) => {
   return (
     <FormProvider {...form}>
       <form className="flex flex-col gap-5" onSubmit={form.handleSubmit(onSubmit)}>
-        <FormField name="email" label="E-Mail" required />
-        <FormField name="fullName" label="Полное имя" required />
-        <FormField name="password" label="Пароль" type="password" required />
-        <FormField name="confirmPassword" label="Подтвердите пароль" type="password" required />
+        <FormField 
+          type="email" 
+          name="email" 
+          label="E-Mail" 
+          placeholder="Введите вашу почту" 
+          required 
+        />
+        <FormField 
+          type="text" 
+          name="fullName" 
+          label="Полное имя" 
+          placeholder="Введите ваше полное имя" 
+          required 
+        />
+        <FormField 
+          type="password" 
+          name="password" 
+          label="Пароль" 
+          placeholder="Введите ваш пароль" 
+          required 
+        />
+        <FormField 
+          type="password" 
+          name="confirmPassword" 
+          label="Подтвердите пароль"
+          placeholder="Подтвердите ваш пароль" 
+          required 
+        />
 
-        <Button disabled={form.formState.isSubmitting} className="h-12 text-base" type="submit">
+        <Button loading={form.formState.isSubmitting} className="h-12 text-base" type="submit">
           Зарегистрироваться
         </Button>
       </form>

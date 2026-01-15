@@ -54,8 +54,20 @@ export const LoginForm = ({ onClose }: Props) => {
           <Image src="/assets/images/email-icon.png" alt="email-icon" width={60} height={60} />
         </div>
 
-        <FormField name="email" label="E-Mail" required />
-        <FormField type="password" name="password" label="Пароль" required />
+        <FormField 
+          type="email" 
+          name="email" 
+          label="E-Mail" 
+          placeholder="Введите вашу почту" 
+          required 
+        />
+        <FormField 
+          type="password" 
+          name="password" 
+          label="Пароль" 
+          placeholder="Введите ваш пароль" 
+          required 
+        />
 
         <Button loading={form.formState.isSubmitting} className="h-12 text-base" type="submit">
           Войти

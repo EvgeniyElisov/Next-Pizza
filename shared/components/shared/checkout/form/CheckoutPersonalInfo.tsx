@@ -14,10 +14,38 @@ export const CheckoutPersonalInfo = ({ totalAmount, className }: Props) => {
         contentClassName="p-8"
     >
       <div className="grid grid-cols-2 gap-5">
-        <FormField name="firstName" fieldType="input" placeholder="Имя" label="Имя" required />
-        <FormField name="lastName" fieldType="input" placeholder="Фамилия" label="Фамилия" required />
-        <FormField name="email" fieldType="input" placeholder="E-Mail" label="E-Mail" required />
-        <FormField name="phone" fieldType="input" placeholder="Телефон" label="Телефон" required />
+        <FormField 
+          type="text" 
+          name="firstName" 
+          fieldType="input" 
+          placeholder="Введите ваше имя" 
+          label="Имя" 
+          required 
+        />
+        <FormField 
+          type="text" 
+          name="lastName" 
+          fieldType="input" 
+          placeholder="Введите вашу фамилию" 
+          label="Фамилия" 
+          required 
+        />
+        <FormField 
+          type="email" 
+          name="email" 
+          fieldType="input" 
+          placeholder="Введите вашу почту" 
+          label="E-Mail" 
+          required 
+        />
+        <FormField 
+          type="tel" 
+          name="phone" 
+          fieldType="input" 
+          placeholder="Введите ваш телефон" 
+          label="Телефон" 
+          required 
+        />
       </div>  
     </InfoBlock>
   );
