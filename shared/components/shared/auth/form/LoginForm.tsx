@@ -5,7 +5,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { formLoginSchema, LoginFormInputs } from "./schemas";
 import { signIn } from "next-auth/react";
 import toast from "react-hot-toast";
-import { FormField, Title } from "../..";
+import { FormField, SocialAuthButtons, Title } from "../..";
 import { Button } from "shared/components/ui";
 import Image from "next/image";
 import { toastError, toastSuccess } from "shared/lib";
@@ -72,6 +72,8 @@ export const LoginForm = ({ onClose }: Props) => {
         <Button loading={form.formState.isSubmitting} className="h-12 text-base" type="submit">
           Войти
         </Button>
+        <p className="text-gray-400">Или войдите с помощью социальных сетей</p>
+        <SocialAuthButtons type="login" onSwitchType={() => {}} />
       </form>
     </FormProvider>
   );
