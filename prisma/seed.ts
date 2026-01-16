@@ -66,7 +66,7 @@ const seedIngredients = async (): Promise<number[]> => {
   return ingredients.map((ing) => ing.id);
 };
 
-const seedProducts = async (categoryMap: Map<string, number>): Promise<number[]> => {
+const seedProducts = async (categoryMap: Map<string, number>): Promise<{ productIds: number[]; productPriceMap: Map<number, number> }> => {
   const productsData = PRODUCTS_DATA.filter((product) => {
     const categoryId = categoryMap.get(product.categoryName);
     if (!categoryId) {
@@ -91,17 +91,29 @@ const seedProducts = async (categoryMap: Map<string, number>): Promise<number[]>
       },
     },
     orderBy: { id: "asc" },
-    select: { id: true },
+    select: { id: true, name: true },
   });
 
-  return createdProducts.map((p) => p.id);
+  const productPriceMap = new Map<number, number>();
+  createdProducts.forEach((product) => {
+    const productData = productsData.find((p) => p.name === product.name);
+    if (productData?.price !== undefined) {
+      productPriceMap.set(product.id, productData.price);
+    }
+  });
+
+  return {
+    productIds: createdProducts.map((p) => p.id),
+    productPriceMap,
+  };
 };
 
-const seedProductVariants = async (productIds: number[]): Promise<void> => {
+const seedProductVariants = async (productIds: number[], productPriceMap: Map<number, number>): Promise<void> => {
   for (const productId of productIds) {
     await prisma.productVariant.create({
       data: generateProductVariant({
         productId,
+        price: productPriceMap.get(productId),
       }),
     });
   }
@@ -362,10 +374,10 @@ const seedDatabase = async (): Promise<void> => {
   const ingredientIds = await seedIngredients();
   console.log("✅ Ингредиенты созданы");
 
-  const productIds = await seedProducts(categoryMap);
+  const { productIds, productPriceMap } = await seedProducts(categoryMap);
   console.log("✅ Продукты созданы");
 
-  await seedProductVariants(productIds);
+  await seedProductVariants(productIds, productPriceMap);
   console.log("✅ Варианты продуктов созданы");
 
   const pizzaResults = await seedPizzas(categoryMap, ingredientIds);

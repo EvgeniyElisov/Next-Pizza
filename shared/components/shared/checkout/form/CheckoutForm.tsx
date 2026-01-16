@@ -15,7 +15,7 @@ export const CheckoutForm = () => {
   const { items, totalAmount, onClickCountButtonHandler, onClickRemoveCartItemHandler, loading, initialLoading } = useCart();
 
   const [submitting, setSubmitting] = useState(false);
-  const session = useSession();
+  const { data: session } = useSession();
 
   const form = useForm<OrderFormInputs>({
     resolver: zodResolver(orderFormSchema),

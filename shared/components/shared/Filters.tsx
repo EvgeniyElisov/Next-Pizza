@@ -10,7 +10,7 @@ type Props = {
 
 export const Filters = ({ className }: Props) => {
   const minPrice = 0;
-  const maxPrice = 1000;
+  const maxPrice = 100;
 
   const { ingredients, loading } = useIngredients();
   const filters = useFilters();
@@ -70,7 +70,7 @@ export const Filters = ({ className }: Props) => {
           <Input
             type="number"
             placeholder={maxPrice.toString()}
-            min={100}
+            min={minPrice}
             max={maxPrice}
             value={filters.price.priceTo || maxPrice}
             onChange={(e) => filters.setPrice("priceTo", Number(e.currentTarget.value))}
