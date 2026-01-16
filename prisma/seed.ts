@@ -240,7 +240,6 @@ const seedCartItems = async (cartMap: Map<number, number>, ingredientIds: number
     });
   }
 
-  // Добавляем пиццу с ингредиентами для первого пользователя
   const pizzaVariant = await prisma.productVariant.findFirst({
     where: {
       pizzaType: {

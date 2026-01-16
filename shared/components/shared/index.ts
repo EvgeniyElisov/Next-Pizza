@@ -20,6 +20,7 @@ export { IngredientItem } from "./IngredientItem";
 export { IngredientsList } from "./IngredientsList";
 export { ProductForm } from "./ProductForm";
 export { MessageBlock } from "./MessageBlock";
+export { Stories } from "./Stories";
 export * from "./email-templates";
 export * from "./form";
 export * from "./checkout";

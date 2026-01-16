@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { Container, Filters, ProductsGroupList, Title, TopBar } from "shared/components/shared";
+import { Container, Filters, ProductsGroupList, Stories, Title, TopBar } from "shared/components/shared";
 import { findPizzas, GetSearchParams } from "shared/lib/findPizzas";
 
 export default async function Home({searchParams}: {searchParams: Promise<GetSearchParams>}) {
@@ -12,7 +12,11 @@ export default async function Home({searchParams}: {searchParams: Promise<GetSea
       <Container className={"mt-10"}>
         <Title text="Все пиццы" size="lg" className="font-extrabold" />
       </Container>
+      
       <TopBar categories={categories.filter((category) => category.products.length > 0)} />
+
+      <Stories/>
+      
       <Container className={"mt-10 pb-14"}>
         <div className={"flex gap-[80px]"}>
           <div className={"w-[250px]"}>

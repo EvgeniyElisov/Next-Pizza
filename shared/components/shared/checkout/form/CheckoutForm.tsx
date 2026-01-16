@@ -9,19 +9,13 @@ import { toastError, toastSuccess } from "shared/lib";
 import { CheckoutAddress, CheckoutCart, CheckoutPersonalInfo, CheckoutSidebar } from ".";
 import { OrderFormInputs, orderFormSchema } from "./schemas";
 import { useSession } from "next-auth/react";
+import { apiClient } from "shared/services";
 
 export const CheckoutForm = () => {
-  const { 
-    items, 
-    totalAmount, 
-    onClickCountButtonHandler, 
-    onClickRemoveCartItemHandler, 
-    loading, 
-    initialLoading 
-} = useCart();
+  const { items, totalAmount, onClickCountButtonHandler, onClickRemoveCartItemHandler, loading, initialLoading } = useCart();
 
   const [submitting, setSubmitting] = useState(false);
-  const session = useSession();  
+  const session = useSession();
 
   const form = useForm<OrderFormInputs>({
     resolver: zodResolver(orderFormSchema),
@@ -36,8 +30,16 @@ export const CheckoutForm = () => {
   });
 
   useEffect(() => {
-    
-   
+    async function fetchUserInfo() {
+      const data = await apiClient.auth.getMe();
+      const [firstName, lastName] = data.fullName.split(" ");
+      form.setValue("firstName", firstName);
+      form.setValue("lastName", lastName);
+      form.setValue("email", data.email);
+    }
+    if (session) {
+      fetchUserInfo();
+    }
   }, [session]);
 
   const onSubmit = async (data: OrderFormInputs) => {

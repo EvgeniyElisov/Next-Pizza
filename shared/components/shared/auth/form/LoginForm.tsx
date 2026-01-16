@@ -96,7 +96,7 @@ export const LoginForm = ({ onClose }: Props) => {
           </div>
         </div>
 
-        <SocialAuthButtons type="login" onSwitchType={() => {}} />
+        <SocialAuthButtons />
       </form>
     </FormProvider>
   );

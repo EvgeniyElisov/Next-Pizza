@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Button } from "shared/components/ui";
 
 type Props = {
-  provider: "github" | "google";
+  provider: "github";
   iconSrc: string;
   label: string;
 };

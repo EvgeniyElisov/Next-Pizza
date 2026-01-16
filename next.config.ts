@@ -16,6 +16,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "cdn.dodostatic.net",
       },
+      {
+        protocol: "https",
+        hostname: "cdn.inappstory.ru",
+      },
     ],
   },
 };
