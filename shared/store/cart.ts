@@ -24,7 +24,7 @@ export type State = {
   items: CartStateItem[];
   fetchCartItems: () => Promise<void>;
   updateItemQuantity: (id: number, quantity: number) => Promise<void>;
-  addCartItem: (values: any) => Promise<void>;
+  addCartItem: (values: CreateCartItemValues) => Promise<void>;
   removeCartItem: (id: number) => Promise<void>;
 };
 
@@ -39,8 +39,7 @@ export const useCartStore = create<State>((set, get) => ({
       set({ loading: true, initialLoading: true, error: false });
       const data = await apiClient.cart.getCart();
       set({ ...getCartDetails(data), initialLoading: false });
-    } catch (error) {
-      console.error(error);
+    } catch {
       set({ error: true, initialLoading: false });
     } finally {
       set({ loading: false });
@@ -54,8 +53,7 @@ export const useCartStore = create<State>((set, get) => ({
       }));
       const data = await apiClient.cart.updateItemQuantity(id, quantity);
       set(getCartDetails(data));
-    } catch (error) {
-      console.error(error);
+    } catch {
       set({ error: true });
       toastError("Не удалось обновить количество товара");
     } finally {
@@ -73,9 +71,8 @@ export const useCartStore = create<State>((set, get) => ({
       const data = await apiClient.cart.removeCartItem(id);
       set(getCartDetails(data));
       toastSuccess("Товар удален из корзины");
-    } catch (error) {
+    } catch {
       set({ error: true });
-      console.error(error);
       toastError("Не удалось удалить товар из корзины");
     } finally {
       set((state) => ({
@@ -89,8 +86,7 @@ export const useCartStore = create<State>((set, get) => ({
       const data = await apiClient.cart.addCartItem(values);
       set(getCartDetails(data));
       toastSuccess("Товар добавлен в корзину");
-    } catch (error) {
-      console.error(error);
+    } catch {
       set({ error: true });
       toastError("Не удалось добавить товар в корзину");
     } finally {

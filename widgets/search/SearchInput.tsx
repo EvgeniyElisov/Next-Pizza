@@ -23,8 +23,8 @@ export const SearchInput = ({ className }: Props) => {
       try {
         const products = await apiClient.products.search(searchQuery);
         setProducts(products);
-      } catch (error) {
-        console.error(error);
+      } catch {
+        setProducts([]);
       }
     },
     500,

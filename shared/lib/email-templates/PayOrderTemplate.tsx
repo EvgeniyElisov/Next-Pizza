@@ -1,10 +1,10 @@
 type Props = {
-  oderId: number;
+  orderId: number;
   totalAmount: number;
   paymentUrl: string;
 };
 
-export const PayOrderTemplate = ({ oderId, totalAmount, paymentUrl }: Props) => {
+export const PayOrderTemplate = ({ orderId, totalAmount, paymentUrl }: Props) => {
   return (
     <html>
       <body style={{ margin: 0, padding: 0, backgroundColor: "#f3f4f6", fontFamily: "system-ui, -apple-system, sans-serif" }}>
@@ -57,7 +57,7 @@ export const PayOrderTemplate = ({ oderId, totalAmount, paymentUrl }: Props) => 
                             <span style={{ color: "#6b7280", fontSize: "14px", fontWeight: "500" }}>Номер заказа:</span>
                           </td>
                           <td style={{ padding: "8px 0", textAlign: "right" }}>
-                            <span style={{ color: "#1f2937", fontSize: "16px", fontWeight: "600" }}>№{oderId}</span>
+                            <span style={{ color: "#1f2937", fontSize: "16px", fontWeight: "600" }}>№{orderId}</span>
                           </td>
                         </tr>
                         <tr>

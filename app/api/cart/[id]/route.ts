@@ -2,10 +2,14 @@ import { prisma } from "prisma/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { updateCartTotalAmount } from "shared/lib/updateCartTotalAmount";
 
+type UpdateCartItemBody = {
+  quantity: number;
+};
+
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params;
-    const data = (await req.json()) as { quantity: number };
+    const data = (await req.json()) as UpdateCartItemBody;
     const token = req.cookies.get("cartToken")?.value;
 
     if (!token) {
@@ -34,13 +38,12 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     const updatedUserCart = await updateCartTotalAmount(token);
 
     return NextResponse.json(updatedUserCart);
-  } catch (err) {
-    console.error(`[CART_PATCH] Server error: ${err}`);
+  } catch {
     return NextResponse.json({ message: "Не удалось обновить корзину" }, { status: 500 });
   }
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params;
     const token = req.cookies.get("cartToken")?.value;
@@ -68,8 +71,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
     const updatedUserCart = await updateCartTotalAmount(token);
 
     return NextResponse.json(updatedUserCart);
-  } catch (err) {
-    console.error(`[CART_DELETE] Server error: ${err}`);
+  } catch {
     return NextResponse.json({ message: "Не удалось удалить корзину" }, { status: 500 });
   }
 }

@@ -13,11 +13,7 @@ export async function GET(req: NextRequest) {
     }
     const userCart = await prisma.cart.findFirst({
       where: {
-        OR: [
-          {
-            token,
-          },
-        ],
+        token,
       },
       include: {
         items: {
@@ -37,8 +33,7 @@ export async function GET(req: NextRequest) {
     });
 
     return NextResponse.json(userCart);
-  } catch (error) {
-    console.error("[CART_GET] Server error: ", error);
+  } catch {
     return NextResponse.json({ message: "Не удалось получить корзину" }, { status: 500 });
   }
 }
@@ -105,8 +100,7 @@ export async function POST(req: NextRequest) {
     const response = NextResponse.json(updatedUserCart);
     response.cookies.set("cartToken", token);
     return response;
-  } catch (error) {
-    console.error("[CART_POST] Server error: ", error);
+  } catch {
     return NextResponse.json({ message: "Не удалось создать корзину" }, { status: 500 });
   }
 }

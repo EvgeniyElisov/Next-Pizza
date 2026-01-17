@@ -12,7 +12,6 @@ export const sendEmail = async (to: string, subject: string, emailTemplate: Reac
   });
 
   if (error) {
-    console.error(error);
     throw new Error("Failed to send email");
   }
 

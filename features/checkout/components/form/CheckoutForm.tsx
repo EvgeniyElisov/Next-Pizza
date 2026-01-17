@@ -54,7 +54,6 @@ export const CheckoutForm = () => {
         location.href = url;
       }
     } catch (error) {
-      console.error(error);
       const errorMessage = error instanceof Error ? error.message : "Не удалось оформить заказ";
       toastError(errorMessage);
     } finally {

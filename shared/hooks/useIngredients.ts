@@ -12,8 +12,8 @@ export const useIngredients = () => {
         setLoading(true);
         const ingredients = await apiClient.ingredients.getIngredients();
         setIngredients(ingredients);
-      } catch (error) {
-        console.error(error);
+      } catch {
+        // Ошибка при загрузке ингредиентов
       } finally {
         setLoading(false);
       }

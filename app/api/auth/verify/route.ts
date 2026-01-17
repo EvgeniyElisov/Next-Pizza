@@ -27,8 +27,7 @@ export async function GET(req: NextRequest) {
     });
 
     return NextResponse.redirect(new URL("/verified", req.url));
-
-  } catch (error) {
-    console.error("[VERIFY_USER] Server error: ", error);
+  } catch {
+    return NextResponse.json({ error: "Не удалось верифицировать пользователя" }, { status: 500 });
   }
 }

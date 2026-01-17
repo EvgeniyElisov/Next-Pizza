@@ -38,8 +38,7 @@ export const LoginForm = ({ onClose }: Props) => {
 
       toastSuccess("Вы успешно вошли в аккаунт");
       onClose?.();
-    } catch (error) {
-      console.log("Error [LOGIN]", error);
+    } catch {
       toastError("Не удалось войти в аккаунт");
     }
   };

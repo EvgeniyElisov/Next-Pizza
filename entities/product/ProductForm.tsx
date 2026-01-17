@@ -27,8 +27,8 @@ export const ProductForm = ({ className, product, onSuccess }: Props) => {
         ingredients,
       });
       onSuccess?.();
-    } catch (error) {
-      console.error(error);
+    } catch {
+      // Ошибка обрабатывается в store
     }
   };
 

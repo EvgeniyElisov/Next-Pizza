@@ -47,7 +47,7 @@ export async function createOrder(data: OrderFormInputs) {
     const order = await prisma.order.create({
       data: {
         token,
-        fullName: data.firstName + " " + data.lastName,
+        fullName: `${data.firstName} ${data.lastName}`,
         email: data.email,
         phone: data.phone,
         address: data.address,
@@ -73,19 +73,21 @@ export async function createOrder(data: OrderFormInputs) {
       },
     });
 
-    //TODO: сделать запрос на payment сервис
+    // TODO: Интеграция с payment сервисом будет добавлена в будущих версиях
 
     await sendEmail(
       data.email,
-      "Ваш заказ №" + order.id + " успешно оформлен!",
+      `Ваш заказ №${order.id} успешно оформлен!`,
       PayOrderTemplate({
-        oderId: order.id,
+        orderId: order.id,
         totalAmount: order.totalAmount,
         paymentUrl: "localhost:3000/checkout/payment",
       })
     );
   } catch (error) {
-    console.error("[CREATE_ORDER] Server error: ", error);
+    if (error instanceof Error) {
+      throw error;
+    }
     throw new Error("Не удалось оформить заказ");
   }
 
@@ -124,7 +126,9 @@ export async function updateUserInfo(body: UpdateUserInfoBody) {
 
     return true;
   } catch (error) {
-    console.error("[UPDATE_USER_INFO] Server error: ", error);
+    if (error instanceof Error) {
+      throw error;
+    }
     throw new Error("Не удалось обновить данные пользователя");
   }
 }
@@ -167,16 +171,17 @@ export async function registerUser(body: RegisterUserBody) {
       },
     });
 
-    sendEmail(
+    await sendEmail(
       newUser.email,
       "Подтверждение регистрации",
       VerifyUserTemplate({
         code,
       })
     );
-
   } catch (error) {
-    console.error("[REGISTER_USER] Server error: ", error);
+    if (error instanceof Error) {
+      throw error;
+    }
     throw new Error("Не удалось зарегистрировать пользователя");
   }
 }

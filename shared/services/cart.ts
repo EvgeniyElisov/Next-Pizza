@@ -1,7 +1,6 @@
 import { CartDTO, CreateCartItemValues } from "shared/services/dto/cart";
 import { axiosInstance } from "shared/services/instance";
 
-
 export const getCart = async (): Promise<CartDTO> => {
   const { data } = await axiosInstance.get<CartDTO>("/cart");
 
@@ -9,13 +8,13 @@ export const getCart = async (): Promise<CartDTO> => {
 };
 
 export const updateItemQuantity = async (id: number, quantity: number): Promise<CartDTO> => {
-  const { data } = await axiosInstance.patch<CartDTO>("/cart/" + id, { quantity });
+  const { data } = await axiosInstance.patch<CartDTO>(`/cart/${id}`, { quantity });
 
   return data;
 };
 
 export const removeCartItem = async (id: number): Promise<CartDTO> => {
-  const { data } = await axiosInstance.delete<CartDTO>("/cart/" + id);
+  const { data } = await axiosInstance.delete<CartDTO>(`/cart/${id}`);
 
   return data;
 };
